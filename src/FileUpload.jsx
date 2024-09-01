@@ -255,7 +255,7 @@ const FileUpload = () => {
               Seamless, secure file sharing with peace of mind and privacy.
             </h2>
             <p>
-              FastFile leverages advanced end-to-end encryption to rigorously protect your files
+              CloudShare leverages advanced end-to-end encryption to rigorously protect your files
               during transfer and storage. Secure sharing links include the necessary decryption
               information, ensuring that only intended recipients can access your files.
             </p>
