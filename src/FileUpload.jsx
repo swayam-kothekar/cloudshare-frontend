@@ -195,7 +195,7 @@ const FileUpload = () => {
       console.log(downloadData);
 
             
-      const downloadUrl = `https://cloudshare-frontend.vercel.app/download?url=${encodeURIComponent(downloadData.downloadUrl)}&key=${keyBase64}`;
+      const downloadUrl = `https://swayamkothekar.me/download?url=${encodeURIComponent(downloadData.downloadUrl)}&key=${keyBase64}`;
       setDownloadLink(downloadUrl);
 
     } catch (err) {
