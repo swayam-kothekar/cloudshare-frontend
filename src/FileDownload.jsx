@@ -9,6 +9,28 @@ const FileDownload = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  document.addEventListener('DOMContentLoaded', () => {
+    const interBubble = document.querySelector('.interactive');
+    let curX = 0;
+    let curY = 0;
+    let tgX = 0;
+    let tgY = 0;
+
+    const move = () => {
+        curX += (tgX - curX) / 20;
+        curY += (tgY - curY) / 20;
+        interBubble.style.transform = `translate(${Math.round(curX)}px, ${Math.round(curY)}px)`;
+        requestAnimationFrame(move);
+    };
+
+    window.addEventListener('mousemove', (event) => {
+        tgX = event.clientX;
+        tgY = event.clientY;
+    });
+
+    move();
+  })
+
   const styles = {
     container: {
       padding: '20px',
@@ -38,7 +60,6 @@ const FileDownload = () => {
       border: '2px solid #ffffff',
       borderRadius: '8px',
       padding: '20px',
-      backgroundColor: '#1f2833',
       display: 'flex',
       flexDirection: 'column',
       minWidth: '500px',
@@ -63,7 +84,7 @@ const FileDownload = () => {
       fontSize: '18px',
     },
     downloadButton: {
-      backgroundColor: '#45a29e',
+      backgroundColor: '#1779aa',
       border: 'none',
       color: '#fff',
       padding: '5px 10px',
@@ -80,7 +101,7 @@ const FileDownload = () => {
       gap: '10px',
     },
     button: {
-      backgroundColor: '#45a29e',
+      backgroundColor: '#1779aa',
       border: 'none',
       color: '#fff',
       padding: '10px 20px',
@@ -236,7 +257,31 @@ const FileDownload = () => {
 
 
   return (
-    <div style={styles.container}>
+    <div>
+      <div class="card">
+        <svg
+          viewBox="0 0 100% 100%"
+          xmlns="http://www.w3.org/2000/svg"
+          class="noise"
+        >
+          <filter id="noiseFilter">
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="0.85"
+              numOctaves="6"
+              stitchTiles="stitch"
+            />
+          </filter>
+
+          <rect
+            width="100%"
+            height="100%"
+            preserveAspectRatio="xMidYMid meet"
+            filter="url(#noiseFilter)"
+          />
+        </svg>
+        <div class="content">
+        <div style={styles.container}>
       <h1>CloudShare</h1>
       <h2>You've Got Files!</h2>
       {extractedFiles.length > 0 && (
@@ -272,6 +317,59 @@ const FileDownload = () => {
       )}
       {status && <p style={styles.status}>{status}</p>}
     </div>
+          </div>
+      </div>
+      <div class="gradient-bg">
+        <svg
+          viewBox="0 0 100vw 100vw"
+          xmlns="http://www.w3.org/2000/svg"
+          class="noiseBg"
+        >
+          <filter id="noiseFilterBg">
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="0.6"
+              stitchTiles="stitch"
+            />
+          </filter>
+
+          <rect
+            width="100%"
+            height="100%"
+            preserveAspectRatio="xMidYMid meet"
+            filter="url(#noiseFilterBg)"
+          />
+        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" class="svgBlur">
+          <defs>
+            <filter id="goo">
+              <feGaussianBlur
+                in="SourceGraphic"
+                stdDeviation="10"
+                result="blur"
+              />
+              <feColorMatrix
+                in="blur"
+                mode="matrix"
+                values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -8"
+                result="goo"
+              />
+              <feBlend in="SourceGraphic" in2="goo" />
+            </filter>
+          </defs>
+        </svg>
+        <div class="gradients-container">
+          <div class="g1"></div>
+          <div class="g2"></div>
+          <div class="g3"></div>
+          <div class="g4"></div>
+          <div class="g5"></div>
+          <div class="interactive"></div>
+        </div>
+      </div>
+    </div>
+
+    
   );
 };
 
