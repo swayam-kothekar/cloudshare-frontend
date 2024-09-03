@@ -229,7 +229,7 @@ const FileUpload = () => {
 
       console.log(downloadData);
 
-      const downloadUrl = `https://swayamkothekar.me/download?url=${encodeURIComponent(
+      const downloadUrl = `https://cloudshare.swayam.tech/download?url=${encodeURIComponent(
         downloadData.downloadUrl
       )}&key=${keyBase64}`;
       setDownloadLink(downloadUrl);
