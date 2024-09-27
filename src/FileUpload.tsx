@@ -98,7 +98,7 @@ const FileUpload: React.FC = () => {
 
     try {
       setIsUploading(true);
-      setUploadStatus("Zipping files...");
+      // setUploadStatus("Zipping files...");
       const zip = new JSZip();
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
@@ -106,7 +106,7 @@ const FileUpload: React.FC = () => {
       }
       const zipFile = await zip.generateAsync({ type: "blob" });
 
-      setUploadStatus("Encrypting zip file...");
+      // setUploadStatus("Encrypting zip file...");
       const { encryptedFile, key } = await encryptFile(zipFile);
 
       const { data } = await axios.post<{ uploadUrl: string; keyName: string }>(
@@ -118,14 +118,14 @@ const FileUpload: React.FC = () => {
 
       const { uploadUrl, keyName } = data;
 
-      setUploadStatus("Uploading encrypted zip file...");
+      // setUploadStatus("Uploading encrypted zip file...");
       await axios.put(uploadUrl, encryptedFile, {
         headers: {
           "Content-Type": "application/octet-stream",
         },
       });
 
-      setUploadStatus("Files encrypted and uploaded successfully!");
+      // setUploadStatus("Files encrypted and uploaded successfully!");
 
       const keyBase64 = uint8ArrayToBase64(key);
 
@@ -153,11 +153,11 @@ const FileUpload: React.FC = () => {
       setDownloadLink(shortUrlData.shortenedUrl);
     } catch (err) {
       console.error("File upload failed:", err);
-      setUploadStatus(
-        `File upload failed: ${
-          err instanceof Error ? err.message : String(err)
-        }`
-      );
+      // setUploadStatus(
+      //   `File upload failed: ${
+      //     err instanceof Error ? err.message : String(err)
+      //   }`
+      // );
     } finally {
       setIsUploading(false);
     }
@@ -169,12 +169,12 @@ const FileUpload: React.FC = () => {
       navigator.clipboard
         .writeText(downloadLink)
         .then(() => {
-          setUploadStatus("Link copied to clipboard!");
+          // setUploadStatus("Link copied to clipboard!");
           setButtonText("Link Copied!");
         })
         .catch((err) => {
           console.error("Failed to copy link:", err);
-          setUploadStatus("Failed to copy link.");
+          // setUploadStatus("Failed to copy link.");
         });
     }
   };
