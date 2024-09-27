@@ -30,7 +30,7 @@ import { Input } from "./components/ui/input";
 
 const FileUpload: React.FC = () => {
   const [files, setFiles] = useState<FileList | null>(null);
-  const [uploadStatus, setUploadStatus] = useState<string>("");
+  // const [uploadStatus, setUploadStatus] = useState<string>("");
   const [downloadLink, setDownloadLink] = useState<string>("");
   const [buttonText, setButtonText] = useState("Copy Link");
   const [expiryTime, setExpiryTime] = useState<string>("86400");
