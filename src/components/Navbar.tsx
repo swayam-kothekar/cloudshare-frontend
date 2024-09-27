@@ -45,14 +45,13 @@ export const Navbar = () => {
       <NavigationMenu className="mx-auto">
         <NavigationMenuList className="container h-14 px-4 w-screen flex justify-between ">
           <NavigationMenuItem className="font-bold flex">
-            <a
-              rel="noreferrer noopener"
-              href="/"
+            <Link
+              to="/"
               className="ml-2 font-bold text-xl flex"
             >
               <LogoIcon />
               CloudShare
-            </a>
+            </Link>
           </NavigationMenuItem>
 
           {/* mobile */}
@@ -105,28 +104,25 @@ export const Navbar = () => {
           {/* desktop */}
           <nav className="hidden md:flex gap-2">
             {routeList.map((route: RouteProps, i) => (
-              <a
-                rel="noreferrer noopener"
-                href={route.href}
+              <Link
+                to={route.href}
                 key={i}
                 className={`text-[17px] ${buttonVariants({
                   variant: "ghost",
                 })}`}
               >
                 {route.label}
-              </a>
+              </Link>
             ))}
           </nav>
 
           <div className="hidden md:flex gap-2">
-            <a
-              rel="noreferrer noopener"
-              href="/upload"
-              target="_blank"
-              className={`border ${buttonVariants({ variant: "secondary" })}`}
+            <Link
+              to="/upload"
+              className={buttonVariants({ variant: "secondary" })}
             >
               Upload Files
-            </a>
+            </Link>
 
             {/* <ModeToggle /> */}
           </div>
