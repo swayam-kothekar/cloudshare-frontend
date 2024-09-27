@@ -16,6 +16,7 @@ import { buttonVariants } from "./ui/button";
 import { Menu } from "lucide-react";
 // import { ModeToggle } from "./mode-toggle";
 import { LogoIcon } from "./Icons";
+import { Link } from "react-router-dom";
 
 interface RouteProps {
   href: string;
@@ -77,28 +78,25 @@ export const Navbar = () => {
                     CloudShare
                   </SheetTitle>
                 </SheetHeader>
+
                 <nav className="flex flex-col justify-center items-center gap-2 mt-4">
                   {routeList.map(({ href, label }: RouteProps) => (
-                    <a
-                      rel="noreferrer noopener"
+                    <Link
                       key={label}
-                      href={href}
+                      to={href}
                       onClick={() => setIsOpen(false)}
                       className={buttonVariants({ variant: "ghost" })}
                     >
                       {label}
-                    </a>
+                    </Link>
                   ))}
-                  <a
-                    rel="noreferrer noopener"
-                    href="/upload"
-                    target="_blank"
-                    className={`w-[110px] border ${buttonVariants({
-                      variant: "secondary",
-                    })}`}
+                  <Link
+                    to="/upload"
+                    onClick={() => setIsOpen(false)}
+                    className={buttonVariants({ variant: "ghost" })}
                   >
                     Upload Files
-                  </a>
+                  </Link>
                 </nav>
               </SheetContent>
             </Sheet>
