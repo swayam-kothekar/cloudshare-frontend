@@ -1,5 +1,5 @@
 import { Button } from "./components/ui/button";
-import { Cloud, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useState, useRef } from "react";
 import axios from "axios";
 import JSZip from "jszip";
@@ -16,7 +16,7 @@ import {
   SelectValue,
 } from "./components/ui/select";
 import { Label } from "./components/ui/label";
-// import { Navbar } from "./components/Navbar";
+import { Navbar } from "./components/Navbar";
 
 import {
   Dialog,
@@ -184,12 +184,13 @@ const FileUpload: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100 flex flex-col">
-  <header className="p-6 flex justify-between items-center bg-gray-800 bg-opacity-50 backdrop-blur-sm">
+  {/* <header className="p-6 flex justify-between items-center bg-gray-800 bg-opacity-50 backdrop-blur-sm">
     <div className="flex items-center space-x-3">
       <Cloud className="h-10 w-10 text-pink-400" />
       <span className="text-2xl font-bold text-pink-400">CloudShare</span>
     </div>
-  </header>
+  </header> */}
+  <Navbar />
 
   <div className="absolute inset-0 overflow-hidden pointer-events-none">
     <svg

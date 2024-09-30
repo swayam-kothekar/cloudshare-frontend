@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import JSZip from "jszip";
 import { Button } from "./components/ui/button";
-import { Cloud, Download, File, UploadCloud } from "lucide-react";
+import { Download, File, UploadCloud } from "lucide-react";
 import { Card, CardContent } from "./components/ui/card";
 import { QRCode } from "react-qrcode-logo";
 import {
@@ -14,6 +14,7 @@ import {
   DialogTrigger,
   DialogDescription,
 } from "@/components/ui/dialog";
+import { Navbar } from "./components/Navbar";
 
 interface ExtractedFile {
   name: string;
@@ -345,12 +346,13 @@ const FileDownload: React.FC = () => {
   //   </div>
 
 <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100 flex flex-col">
-      <header className="p-6 flex justify-between items-center bg-gray-800 bg-opacity-50 backdrop-blur-sm">
+      {/* <header className="p-6 flex justify-between items-center bg-gray-800 bg-opacity-50 backdrop-blur-sm">
         <div className="flex items-center space-x-3">
           <Cloud className="h-10 w-10 text-pink-400" />
           <span className="text-2xl font-bold text-pink-400">CloudShare</span>
         </div>
-      </header>
+      </header> */}
+      <Navbar />
 
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <svg className="absolute bottom-0 left-0 w-full" viewBox="0 0 1440 320" preserveAspectRatio="none">
