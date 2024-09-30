@@ -13,33 +13,42 @@ interface FAQProps {
 
 const FAQList: FAQProps[] = [
   {
-    question: "Is this template free?",
-    answer: "Yes. It is a free ChadcnUI template.",
+    question: "What is CloudShare?",
+    answer: "CloudShare is a secure, cloud-based file-sharing platform where users can upload files and generate temporary links for sharing. The platform offers flexible file-sharing options, including expiry-based link generation and customizable download permissions.",
     value: "item-1",
   },
   {
-    question: "Lorem ipsum dolor sit amet consectetur adipisicing elit?",
-    answer:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint labore quidem quam? Consectetur sapiente iste rerum reiciendis animi nihil nostrum sit quo, modi quod.",
+    question: "How do I upload and share files?",
+    answer:"To share a file, simply upload it using our easy-to-use interface. Once the file is uploaded, you'll receive a temporary link that you can share with others. You can set the file to expire after a specific time or limit the number of downloads.",
     value: "item-2",
   },
   {
     question:
-      "Lorem ipsum dolor sit amet  Consectetur natus dolores minus quibusdam?",
-    answer:
-      "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Labore qui nostrum reiciendis veritatis necessitatibus maxime quis ipsa vitae cumque quo?",
+     "How long do shared files remain accessible?",
+    answer:"By default, files are available for 24 hours after upload. You can customize the expiry duration during the upload process if you need a shorter or longer time window.",
     value: "item-3",
   },
   {
-    question: "Lorem ipsum dolor sit amet, consectetur adipisicing elit?",
-    answer: "Lorem ipsum dolor sit amet consectetur, adipisicing elit.",
+    question: "Can I set a download limit for my files?",
+    answer: "Yes, you can configure whether your file can be downloaded once, multiple times, or without any restrictions. This option is available during the file upload process.",
     value: "item-4",
   },
   {
     question:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur natus?",
-    answer:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint labore quidem quam? Consectetur sapiente iste rerum reiciendis animi nihil nostrum sit quo, modi quod.",
+      " Is there a file size limit?",
+    answer: "Yes, currently, the maximum file size allowed is 50MB. If you need to share larger files, please contact our support team for assistance.",
+    value: "item-5",
+  },
+  {
+    question:
+      "How secure is CloudShare?",
+    answer: "We take security seriously. All files are encrypted both during upload and download to ensure your data is protected. Additionally, we generate secure, randomized links for each file, so only those with access to the link can download the file.",
+    value: "item-5",
+  },
+  {
+    question:
+      " Is there a file size limit?",
+    answer: "Yes, currently, the maximum file size allowed is 50MB. If you need to share larger files, please contact our support team for assistance.",
     value: "item-5",
   },
 ];
