@@ -43,13 +43,13 @@ const FAQList: FAQProps[] = [
     question:
       "How secure is CloudShare?",
     answer: "We take security seriously. All files are encrypted both during upload and download to ensure your data is protected. Additionally, we generate secure, randomized links for each file, so only those with access to the link can download the file.",
-    value: "item-5",
+    value: "item-6",
   },
   {
     question:
       " Is there a file size limit?",
     answer: "Yes, currently, the maximum file size allowed is 50MB. If you need to share larger files, please contact our support team for assistance.",
-    value: "item-5",
+    value: "item-7",
   },
 ];
 
