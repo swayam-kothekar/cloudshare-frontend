@@ -38,9 +38,9 @@ const FileDownload: React.FC = () => {
     handleDownload();
   }, [location]);
 
-  useEffect(() => {
-    setDownloadLink(window.location.href);
-  }, []);
+  // useEffect(() => {
+  //   setDownloadLink(window.location.href);
+  // }, []);
 
   const base64ToUint8Array = (base64: string): Uint8Array => {
     base64 = base64.replace(/-/g, "+").replace(/_/g, "/");
@@ -113,6 +113,8 @@ const FileDownload: React.FC = () => {
     const params = new URLSearchParams(window.location.search);
     const finalUrl = params.get("url");
     const key = params.get("key");
+    const shortUrl = params.get("shortUrl");
+    setDownloadLink(`https://cloudshare.swayam.tech/share/${shortUrl}`);
 
     if (!finalUrl) {
       setStatus("No download URL provided");
@@ -435,7 +437,7 @@ const FileDownload: React.FC = () => {
                   <div className="flex items-center space-x-2 bg-gray-700 bg-opacity-50 p-3 rounded-xl">
                     <input
                       type="text"
-                      value={window.location.href}
+                      value={downloadLink}
                       readOnly
                       className="flex-grow bg-transparent border-none focus:outline-none text-gray-300"
                     />
