@@ -38,9 +38,26 @@ const FileUpload: React.FC = () => {
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [customShortUrl, setCustomShortUrl] = useState('');
+  const [totalFileSize, setTotalFileSize] = useState<number>(0);
+  const [fileSizeError, setFileSizeError] = useState<string>("");
+  const [shortUrlError, setShortUrlError] = useState<string>("");
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFiles(e.target.files);
+    const selectedFiles = e.target.files;
+    if (selectedFiles) {
+      const totalSize = Array.from(selectedFiles).reduce((acc, file) => acc + file.size, 0);
+      const totalSizeMB = totalSize / (1024 * 1024);
+      
+      if (totalSizeMB > 50) {
+        setFileSizeError("Total file size exceeds 50MB limit. Please select smaller files.");
+        setFiles(null);
+        setTotalFileSize(0);
+      } else {
+        setFileSizeError("");
+        setFiles(selectedFiles);
+        setTotalFileSize(totalSizeMB);
+      }
+    }
   };
 
   const uint8ArrayToBase64 = (arr: Uint8Array): string => {
@@ -153,16 +170,25 @@ const FileUpload: React.FC = () => {
       
       const shortUrl = customShortUrl || crypto.getRandomValues(new Uint8Array(4)).reduce((acc, val) => acc + val.toString(16).padStart(2, '0'), '')
       const downloadUrl = `https://cloudshare.swayam.tech/download?url=${encodeURIComponent(
-      // const downloadUrl = `http://localhost:5173/download?url=${encodeURIComponent(
         downloadData.downloadUrl
       )}&key=${keyBase64}&shortUrl=${shortUrl}`;
 
-      const {data: shortUrlData} = await axios.post("https://3cau1u2h61.execute-api.us-east-1.amazonaws.com/dev-test/generate-short-url", {
-        longUrl: downloadUrl,
-        shortUrl: shortUrl,
-      });
-      
-      setDownloadLink(shortUrlData.shortenedUrl);
+      try {
+        const {data: shortUrlData} = await axios.post("https://3cau1u2h61.execute-api.us-east-1.amazonaws.com/dev-test/generate-short-url", {
+          longUrl: downloadUrl,
+          shortUrl: shortUrl,
+        });
+        
+        setDownloadLink(shortUrlData.shortenedUrl);
+        setShortUrlError(""); // Clear any previous error
+      } catch (error) {
+        if (axios.isAxiosError(error) && error.response?.status === 409) {
+          setShortUrlError("This short URL already exists. Please choose a different one.");
+          setIsUploading(false);
+          return;
+        }
+        throw error; // Re-throw if it's not a 409 error
+      }
     } catch (err) {
       console.error("File upload failed:", err);
       setUploadStatus(
@@ -334,19 +360,27 @@ const FileUpload: React.FC = () => {
             >
               <div className="text-center">
                 {files && files.length > 0 ? (
-                  <p className="text-gray-300 text-lg">
-                    {files.length} file{files.length > 1 ? "s" : ""} selected
-                  </p>
+                  <>
+                    <p className="text-gray-300 text-lg">
+                      {files.length} file{files.length > 1 ? "s" : ""} selected
+                    </p>
+                    <p className="text-gray-400 text-sm mt-2">
+                      Total size: {totalFileSize.toFixed(2)} MB
+                    </p>
+                  </>
                 ) : (
                   <>
                     <Upload className="mx-auto h-12 w-12 text-pink-500" />
                     <p className="mt-2 text-sm text-gray-300">
-                      Drag and drop files here or click to select
+                      Drag and drop files here or click to select (Max 50MB total)
                     </p>
                   </>
                 )}
               </div>
             </div>
+            {fileSizeError && (
+              <p className="text-red-500 text-lg mt-2">{fileSizeError}</p>
+            )}
             <div className="flex items-center justify-between">
               <Label className="text-gray-300 text-lg">Delete after:</Label>
               <Select value={expiryTime} onValueChange={setExpiryTime}>
@@ -391,11 +425,16 @@ const FileUpload: React.FC = () => {
                 className="w-2/4 bg-gray-700 bg-opacity-50 border-gray-600"
               />
             </div>
-            {uploadStatus && <p>{uploadStatus}</p>}
+            {shortUrlError && (
+              <p className="text-red-500 text-lg mt-2">{shortUrlError}</p>
+            )}
+            {/* {uploadStatus && (
+              <p className="text-red-500 text-lg font-semibold mt-2">{uploadStatus}</p>
+            )} */}
             <Button
               onClick={zipAndEncryptFiles}
               className="w-full text-lg bg-purple-500 hover:bg-purple-600 text-white transition-colors duration-300"
-              disabled={!files || files.length === 0 || isUploading}
+              disabled={!files || files.length === 0 || isUploading || totalFileSize > 50}
             >
               {isUploading ? (
                 <>
