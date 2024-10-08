@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { ClockIcon, LinkIcon, ShareIcon, UploadIcon } from "./Icons";
+import React from "react";
 
 interface FeatureProps {
   icon: JSX.Element;
@@ -48,20 +49,22 @@ export const HowItWorks = () => {
         Step-by-Step Guide
       </h2><br/><br/>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-        {features.map(({ icon, title, description }: FeatureProps) => (
-          <Card
-            key={title}
-            className="bg-muted/50"
-          >
-            <CardHeader>
-              <CardTitle className="grid gap-4 place-items-center">
-                {icon}
-                {title}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>{description}</CardContent>
-          </Card>
+      <div className="flex flex-col lg:flex-row items-center justify-center gap-4">
+        {features.map(({ icon, title, description }: FeatureProps, index) => (
+          <React.Fragment key={title}>
+            <Card className="bg-muted/50 w-full lg:w-64">
+              <CardHeader>
+                <CardTitle className="grid gap-4 place-items-center">
+                  {icon}
+                  {title}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>{description}</CardContent>
+            </Card>
+            {index < features.length - 1 && (
+              <div className="hidden lg:flex items-center text-primary text-6xl">→</div>
+            )}
+          </React.Fragment>
         ))}
       </div>
     </section>
