@@ -121,32 +121,52 @@ const FileDownload: React.FC = () => {
 
     try {
       const url = new URL(finalUrl);
-
-      const downloadUrl =
-        url.origin + url.pathname + url.search.split("&encryptionKey=")[0];
-      console.log("GetObject Link:" + downloadUrl);
+// console.log(url)
+//       const downloadUrl =
+//         url.origin + url.pathname + url.search.split("&encryptionKey=")[0];
+      console.log("GetObject Link:" + url);
       const encodedKey = key;
-
+      console.log(url.pathname.slice(1))
+      const keyName = url.pathname.slice(1).toString()
+      // console.log(downloadUrl)
       if (!encodedKey) {
         throw new Error("Encryption key not found in URL");
       }
-
       setStatus("Loading Files...");
-      const response = await axios.get<Blob>(downloadUrl, {
-        responseType: "blob",
-      });
-
-      setStatus("Decrypting file...");
-      const decryptionKey = base64ToUint8Array(encodedKey);
-      const { blob: decryptedBlob } = await decryptFile(
-        response.data,
-        decryptionKey
+      const { data: downloadLimitData } = await axios.get(
+        "https://3cau1u2h61.execute-api.us-east-1.amazonaws.com/dev-test/get-download-limit",
+        {
+          params: { keyName: keyName }
+        }
       );
 
-      setStatus("Extracting files...");
-      await extractZip(decryptedBlob);
+      // console.log(downloadLimitData);
+      if(downloadLimitData.downloadLimit > 0){
+        const response = await axios.get<Blob>(url.toString(), {
+          responseType: "blob",
+        });
 
-      setStatus("Files extracted successfully!");
+        setStatus("Decrypting file...");
+        const decryptionKey = base64ToUint8Array(encodedKey);
+        const { blob: decryptedBlob } = await decryptFile(
+          response.data,
+          decryptionKey
+        );
+
+        setStatus("Extracting files...");
+        await extractZip(decryptedBlob);
+
+        setStatus("Files extracted successfully!");
+        await axios.post(
+        "https://3cau1u2h61.execute-api.us-east-1.amazonaws.com/dev-test/decrement-download-limit", {
+          keyName: keyName,
+        }
+      )
+      } else{
+        setStatus("Oops! Download Link Expired or File Deleted")
+      }
+
+      
     } catch (err) {
       if (axios.isAxiosError(err) && err.response?.status === 403) {
         console.error("File download or decryption failed:", err.message);

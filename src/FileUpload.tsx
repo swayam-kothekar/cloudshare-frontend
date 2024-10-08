@@ -34,6 +34,7 @@ const FileUpload: React.FC = () => {
   const [downloadLink, setDownloadLink] = useState<string>("");
   const [buttonText, setButtonText] = useState("Copy Link");
   const [expiryTime, setExpiryTime] = useState<string>("86400");
+  const [downloadLimit, setDownloadLimit] = useState<string>("1000");
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [customShortUrl, setCustomShortUrl] = useState('');
@@ -120,18 +121,20 @@ const FileUpload: React.FC = () => {
       const { uploadUrl, keyName } = data;
 
       setUploadStatus("Uploading encrypted zip file...");
+
       await axios.put(uploadUrl, encryptedFile, {
         headers: {
           "Content-Type": "application/octet-stream",
         },
       });
 
+      
       setUploadStatus("Files encrypted and uploaded successfully!");
-
+      
       const keyBase64 = uint8ArrayToBase64(key);
-
+      
       console.log(expiryTime);
-
+      
       const { data: downloadData } = await axios.post<{ downloadUrl: string }>(
         // "http://localhost:3000/generate-download-url",
         "https://3cau1u2h61.execute-api.us-east-1.amazonaws.com/dev-test/generate-download-url",
@@ -140,6 +143,11 @@ const FileUpload: React.FC = () => {
           expiry: parseInt(expiryTime, 10),
         }
       );
+      
+      await axios.post("https://3cau1u2h61.execute-api.us-east-1.amazonaws.com/dev-test/tag-file", {
+        keyName: keyName,
+        downloadLimit: downloadLimit
+      });
 
       console.log(downloadData);
 
@@ -354,7 +362,7 @@ const FileUpload: React.FC = () => {
             </div>
             <div className="flex items-center justify-between mt-4">
               <Label className="text-gray-300 text-lg">Download limit:</Label>
-              <Select defaultValue="unlimited">
+              <Select defaultValue={downloadLimit} onValueChange={setDownloadLimit}>
                 <SelectTrigger className="w-2/4 bg-gray-700 bg-opacity-50 border-gray-600">
                   <SelectValue placeholder="Set download limit" />
                 </SelectTrigger>
@@ -362,7 +370,11 @@ const FileUpload: React.FC = () => {
                   <SelectItem value="1">1 Download</SelectItem>
                   <SelectItem value="5">5 Downloads</SelectItem>
                   <SelectItem value="10">10 Downloads</SelectItem>
-                  <SelectItem value="unlimited">Unlimited</SelectItem>
+                  <SelectItem value="20">20 Downloads</SelectItem>
+                  <SelectItem value="50">50 Downloads</SelectItem>
+                  <SelectItem value="100">100 Downloads</SelectItem>
+                  <SelectItem value="500">500 Downloads</SelectItem>
+                  <SelectItem value="1000">1000 Downloads</SelectItem>
                 </SelectContent>
               </Select>
             </div>
